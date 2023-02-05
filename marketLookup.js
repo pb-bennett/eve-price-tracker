@@ -5,6 +5,7 @@ const xml2js = require("xml2js");
 const parseStringPromise = require("xml2js").parseStringPromise;
 const { inspect } = require("util");
 const fs = require("fs");
+const db = require("./db");
 
 module.exports = async function (idList) {
   try {
@@ -45,28 +46,35 @@ module.exports = async function (idList) {
     const cleandedAmarrPriceData = itemDataExtract(amarr2PriceData.exec_api.marketstat[0].type, "amarr");
     const cleandedJitaPriceData = itemDataExtract(jitaPriceData.exec_api.marketstat[0].type, "jita");
 
-    const combinedPriceData = [...cleanded1dq1aPriceData, ...cleandedAmarrPriceData, ...cleandedJitaPriceData];
+    // const combinedPriceData = [...cleanded1dq1aPriceData, ...cleandedAmarrPriceData, ...cleandedJitaPriceData];
 
     // console.log(combinedPriceData);
-    return combinedPriceData;
+
+    // return combinedPriceData;
   } catch (error) {
     console.log(error);
   }
 };
 
-const ids = [34, 35, 36, 37, 38, 39];
-
-const itemDataExtract = function (inputData, loc = "unknown") {
-  let combinedPriceData = [];
-  inputData.forEach((type) => {
-    const location = loc,
-      id = type.$.id,
-      [sell] = type.sell[0].min,
-      [sellVolume] = type.sell[0].listed || type.sell[0].volume,
-      [buy] = type.buy[0].max,
-      [buyVolume] = type.buy[0].listed || type.buy[0].volume,
-      updatedAtSource = type.updated || null;
-    combinedPriceData.push({ location, id, sell, sellVolume, buy, buyVolume, updatedAtSource });
-  });
-  return combinedPriceData;
+const itemDataExtract = async function (inputData, loc = "unknown") {
+  try {
+    let combinedPriceData = [];
+    // inputData.forEach((type) => {
+    for await (const type of inputData) {
+      const location = loc,
+        id = type.$.id,
+        [sell] = type.sell[0].min,
+        [sellVolume] = type.sell[0].listed || type.sell[0].volume,
+        [buy] = type.buy[0].max,
+        [buyVolume] = type.buy[0].listed || type.buy[0].volume,
+        updatedAtSource = type.updated || null;
+      const sql = `INSERT INTO priceData (location, id, sell, sellVolume, buy, buyVolume, updatedAtSource) VALUES ("${location}", ${id}, ${sell}, ${sellVolume}, ${buy}, ${buyVolume}, "${updatedAtSource}" )`;
+      console.log(sql);
+      await db.execute(sql);
+      combinedPriceData.push({ location, id, sell, sellVolume, buy, buyVolume, updatedAtSource });
+    }
+    return combinedPriceData;
+  } catch (error) {
+    console.log(error);
+  }
 };
