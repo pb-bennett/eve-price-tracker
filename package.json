@@ -1,0 +1,45 @@
+{
+  "dependencies": {
+    "base64url": "^3.0.1",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "eve-swagger": "^0.3.3",
+    "express": "^4.18.2",
+    "mysql2": "^2.3.3",
+    "node-fetch": "^2.6.9",
+    "pkce-challenge": "^3.0.0",
+    "xml2js": "^0.4.23"
+  },
+  "name": "eve-buyback-checker",
+  "description": "A small Node.js app to periodically check  the Eve Online swagger API for new contracts and verify that their contents are correct, sending an email as way of notification.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon run app.js",
+    "start2": "nodemon run extra.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pb-bennett/eve-buyback-checker.git"
+  },
+  "author": "Paul Bennett",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pb-bennett/eve-buyback-checker/issues"
+  },
+  "homepage": "https://github.com/pb-bennett/eve-buyback-checker#readme",
+  "devDependencies": {
+    "connect-livereload": "^0.6.1",
+    "eslint": "^8.15.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "livereload": "^0.9.3",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.6.2"
+  }
+}
