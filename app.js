@@ -9,6 +9,22 @@ const itemLookupCSV = "./items-test.csv";
 
 // console.log(itemLookupList);
 
+const fetchIDs = async function () {
+  try {
+    const sql = `SELECT typeID FROM itemLookup ORDER BY typeID;`;
+    const ids = await db.execute(sql);
+    let idsArray = [];
+    ids[0].forEach((el) => idsArray.push(el.typeID));
+    const paginateIdsArray = paginate(idsArray, 50);
+    console.log(paginateIdsArray);
+    return paginateIdsArray;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// fetchIDs();
+
 const dataLookup = async function (idList) {
   try {
     const data = await marketLookup(idList);
@@ -18,11 +34,20 @@ const dataLookup = async function (idList) {
   }
 };
 
-(async () => {
-  // code goes here
-  const testLookup = await dataLookup([34, 35]);
-  console.log("from test", testLookup);
-})();
+// (async () => {
+//   const ids = await fetchIDs();
+//   // console.log(ids);
+//   for await (const page of ids) {
+//     await dataLookup(page);
+//   }
+//   // console.log(result);
+// })();
+
+// (async () => {
+//   // code goes here
+//   const testLookup = await dataLookup([34, 35]);
+//   console.log("from test", testLookup);
+// })();
 // (async () => {
 //   // code goes here
 //   const jsonArray = await csv().fromFile(itemLookupCSV);
@@ -54,3 +79,21 @@ const dataLookup = async function (idList) {
 //   const item34 = await itemLookup(34);
 //   console.log(item34);
 // })();
+
+function paginate(arr, size) {
+  return arr.reduce((acc, val, i) => {
+    let idx = Math.floor(i / size);
+    // console.log("i =", i, "size =", size, "Math.floor()=", Math.floor(i / size), "val: ", val, "acc:", acc);
+    let page = acc[idx] || (acc[idx] = []);
+    page.push(val);
+
+    return acc;
+  }, []);
+}
+
+// let array = [1, 22, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+// let page_size = 3;
+// let pages = paginate(array, page_size);
+
+// console.log(pages); // all pages
+// console.log(pages[1]); // second page
