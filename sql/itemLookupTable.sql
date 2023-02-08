@@ -6,5 +6,6 @@ CREATE TABLE itemLookup (
   typeName VARCHAR(100) NOT NULL UNIQUE,
   volume DOUBLE NOT NULL,
   marketGroupID INT NOT NULL,
-  iconID INT
+  iconID INT,
+  FOREIGN KEY(groupID) REFERENCES invGroups(groupID)
 );
