@@ -34,14 +34,14 @@ const dataLookup = async function (idList) {
   }
 };
 
-// (async () => {
-//   const ids = await fetchIDs();
-//   // console.log(ids);
-//   for await (const page of ids) {
-//     await dataLookup(page);
-//   }
-//   // console.log(result);
-// })();
+(async () => {
+  const ids = await fetchIDs();
+  // console.log(ids);
+  for await (const page of ids) {
+    await dataLookup(page);
+  }
+  // console.log(result);
+})();
 
 // (async () => {
 //   // code goes here
