@@ -36,11 +36,11 @@ const fetchIDs = async function () {
 (async () => {
   const ids = await fetchIDs();
   // console.log(ids);
-  await priceCheck(ids[0]);
+  // await priceCheck(ids);
 
-  // for await (const page of ids) {
-  //   await priceCheck(page);
-  // }
+  for await (const page of ids) {
+    await priceCheck(page);
+  }
   process.exit();
   // console.log(result);
 })();
